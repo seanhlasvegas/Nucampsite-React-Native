@@ -1,29 +1,38 @@
-import React, { Component } from "react";
-import { PARTNERS } from "../shared/partners";
-import { ScrollView, Text, FlatList } from "react-native";
-import { Card, ListItem } from "react-native-elements";
+import React, { Component } from 'react';
+import { ScrollView, Text, FlatList } from 'react-native';
+import { Card, ListItem } from 'react-native-elements';
+import { connect } from 'react-redux';
+import { partners } from '../redux/partners';
+import { baseUrl } from '../shared/baseUrl';
 
-const Mission = () => {
+const mapStateToProps = state => {
+  return {
+      partners: state.partners
+  };
+};
+
+
+function Mission() {
   return (
     <Card title={"Mission"}>
       <Text>
-        We present a curated database of the best campsites in the vast woods
-        and backcountry of the World Wide Web Wilderness. We increase access to
-        adventure for the public while promoting safe and respectful use of
-        resources. The expert wilderness trekkers on our staff personally verify
-        each campsite to make sure that they are up to our standards. We also
-        present a platform for campers to share reviews on campsites they have
+                We present a curated database of the best campsites in the vast woods
+        and backcountry of the World Wide Web Wilderness.We increase access to
+         dventure for the public while promoting safe and respectful use of
+         esources.The expert wilderness trekkers on our staff personally verify
+          ch campsite to make sure that they are up to our standards.We also
+           sent a platform for campers to share reviews on campsites they have
         visited with each other.
       </Text>
     </Card>
   );
-};
+}
 
 class About extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      partners: PARTNERS
+      partners: partners
     }
   }
 
@@ -37,7 +46,7 @@ class About extends Component {
         <ListItem
           title={item.name}
           subTitle={item.description}
-          leftAvatar={{ source: require("./images/bootstrap-logo.png") }}
+          leftAvatar={{source: {uri: baseUrl + item.image}}}
         />
       );
     };
@@ -46,15 +55,15 @@ class About extends Component {
       <ScrollView>
         <Mission />
         <Card title="Community Partners">
-          <FlatList
-            data={this.state.partners}
-            renderItem={renderPartner}
-            keyExtractor={(item) => item.id.toString()}
-          />
+        <FlatList 
+                        data={this.props.partners.partners}
+                        renderItem={renderPartner}
+                        keyExtractor={item => item.id.toString()}
+                    />
         </Card>
       </ScrollView>
     );
   }
 }
 
-export default About;
+export default connect(mapStateToProps)(About);
